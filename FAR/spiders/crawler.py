@@ -17,8 +17,8 @@ import urllib.request
 import codecs
 
 
-class singleyearSpider(scrapy.Spider):
-    name = 'singleyear'
+class fetchthereportsSpider(scrapy.Spider):
+    name = 'fetchthereports'
 
 
 
