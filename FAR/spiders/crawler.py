@@ -72,13 +72,14 @@ class fetchthereportsSpider(scrapy.Spider):
             )
 
     def parse(self, response):
-#        page = response.url.split("/")[-2]
-#        filename = 'quotes-%s.html' % page
+# Uncomment the following part if you want to save the page of the list of reports.
+#        
+#        filename = str(re.findall(r'secCode":"(.*)","secName', record)[0]) + '%s.html'
 #        with open(filename, 'wb') as f:
 #            f.write(response.body)
 #        self.log('Saved file %s' % filename)
 
-#        print ('type of response.body',type(response.body))
+
         records = re.split('\"id\":null',response.body.decode('UTF-8','strict')) #split the response body by each record's beginning
         records.pop(0) # remove the head of the file, which is not a record
 
@@ -87,11 +88,10 @@ class fetchthereportsSpider(scrapy.Spider):
 
             file = str(re.findall(r'announcementTitle":"(.*)","announcementTime', record)[0]) #find filename
 
-
             if (file.find('摘要') == -1) & (file.find('取消') == -1) & \
                     ((not file.find('2007') == -1) or (not file.find('2015') == -1) ):
                 # eliminate files which is a brief of a report and which is cancelled.
-                # and Only select the year needed.
+                # and select the years needed.
 
                 filenamelocal = str(re.findall(r'secCode":"(.*)","secName', record)[0])+' ' + file + '.pdf'
                 # split the url to find the real filename on server
